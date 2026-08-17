@@ -40,7 +40,8 @@ jobs:
   integration:
     runs-on: ubuntu-latest
     continue-on-error: true
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && secrets.NVIDIA_API_KEY != ''
+    env:
+      NVIDIA_API_KEY: ${{ secrets.NVIDIA_API_KEY }}
 
     steps:
       - uses: actions/checkout@v4
@@ -57,6 +58,4 @@ jobs:
           pip install -e .[dev]
 
       - name: Run live integration tests against NVIDIA NIM
-        env:
-          NVIDIA_API_KEY: ${{ secrets.NVIDIA_API_KEY }}
         run: pytest -ra -m integration
