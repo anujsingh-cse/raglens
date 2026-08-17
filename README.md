@@ -6,7 +6,7 @@
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![NVIDIA NIM](https://img.shields.io/badge/LLM%20provider-NVIDIA%20NIM-76b900.svg)](https://build.nvidia.com)
-[![CI](https://github.com/anujsingh-cse/raglens/actions/workflows/ci.yml/badge.svg)](https://github.com/anujsingh-cse/raglens/actions)
+[![CI](https://github.com/anujsingh-cse/raglens/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/anujsingh-cse/raglens/actions)
 
 `RAGAS` tells you "this answer is 82% faithful."
 `DeepEval` tells you "this answer passed."
