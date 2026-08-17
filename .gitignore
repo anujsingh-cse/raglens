@@ -1,0 +1,48 @@
+# Byte-compiled / cached Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+*.egg
+
+# Build / dist
+build/
+dist/
+wheels/
+*.whl
+
+# Virtual envs
+.venv/
+venv/
+env/
+
+# Testing / coverage artifacts
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+.tox/
+
+# Type-checker caches
+.mypy_cache/
+.ruff_cache/
+
+# IDE / editor
+.idea/
+.vscode/
+*.swp
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Generated reports
+*_report.html
+quickstart_report.html
+
+# Local secrets / .env used only by us for ad-hoc provider tests.
+# Track `.env.example` (template, no secrets) but ignore real `.env` files.
+.env
+.env.*
+!.env.example

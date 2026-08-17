@@ -1,0 +1,68 @@
+[project]
+name = "raglens"
+version = "0.1.0a0"
+description = "Diagnostic evaluation for Retrieval-Augmented Generation: counterfactual chunk attribution, conflict detection, and failure-mode classification."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+authors = [
+    {name = "Anuj Singh"},
+]
+keywords = [
+    "rag", "retrieval-augmented-generation", "evaluation",
+    "llm", "faithfulness", "attribution", "counterfactual", "diagnostics",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+# Core dependency: NVIDIA NIM is the default LLM provider, accessed via the
+# official `openai` SDK pointed at integrate.api.nvidia.com. No other runtime
+# dep is required to judge RAG traces against real models.
+dependencies = ["openai>=1.50"]
+
+[project.optional-dependencies]
+litellm = ["litellm>=1.40"]
+dev = [
+    "pytest>=7",
+    "pytest-cov",
+    "ruff>=0.5",
+    "python-dotenv>=1.0",
+]
+docs = ["mkdocs", "mkdocs-material"]
+
+[project.urls]
+Homepage = "https://github.com/anujsingh-cse/raglens"
+Repository = "https://github.com/anujsingh-cse/raglens"
+Issues = "https://github.com/anujsingh-cse/raglens/issues"
+Changelog = "https://github.com/anujsingh-cse/raglens/blob/main/CHANGELOG.md"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["raglens"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-markers"
+filterwarnings = ["error"]
+markers = [
+    "integration: marks tests that call NVIDIA NIM and require NVIDIA_API_KEY in the environment; auto-skipped otherwise",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "N", "SIM", "C4", "W"]
+ignore = ["E501"]  # line-length handled by formatter later

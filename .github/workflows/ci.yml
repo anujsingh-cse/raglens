@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: "pip"
+
+      - name: Install package + dev extras (default provider is NVIDIA NIM via `openai` SDK)
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .[dev]
+
+      - name: Lint with ruff
+        run: ruff check raglens tests examples
+
+      - name: Run pure-logic tests (no network, no API key)
+        run: pytest -ra -m "not integration"
+
+      - name: Smoke-compile the quickstart (do not run — requires a real NIM key)
+        run: python -m py_compile examples/quickstart.py
+
+  integration:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && secrets.NVIDIA_API_KEY != ''
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install package
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .[dev]
+
+      - name: Run live integration tests against NVIDIA NIM
+        env:
+          NVIDIA_API_KEY: ${{ secrets.NVIDIA_API_KEY }}
+        run: pytest -ra -m integration
